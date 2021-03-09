@@ -2,11 +2,6 @@
  public class expressions {
 	 static derivate d = new derivate();
 	 static boolean isConst(String s) {
-		 if(s.indexOf('x') == -1)
-			 return true;
-		 else
-			 return false;
-		 /*
 		if(s.equals("e"))
 			return true;
 		boolean ok = true;
@@ -17,7 +12,6 @@
 			}
 		}
 		return ok;
-		*/
 	}
 	 static boolean isX(String s) {
 		return s.equals("x");
