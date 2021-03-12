@@ -38,7 +38,9 @@ public class Latex_main extends JFrame{
 		math = d.derivate(math);
 		math = e.finalStringFormat(math);
 		
-		System.out.println(e.formatLatexStyle(math));
+		// --------------- DE LUCRAT LA POWER FORMAT ---------------------
+		
+		System.out.println(math);
 		//return;
 		
 		

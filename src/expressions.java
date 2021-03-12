@@ -2,6 +2,8 @@
  public class expressions {
 	 static derivate d = new derivate();
 	 static boolean isConst(String s) {
+		 if(isConstPowConst(s))
+				return true;
 		if(s.equals("e"))
 			return true;
 		boolean ok = true;
@@ -85,6 +87,15 @@
 			return isConst(s1) && !isConst(s2);
 		}
 	}
+	 static boolean isConstPowConst(String s) {
+		 if(s.indexOf('^') == -1)
+				return false;
+			else {
+				String s1 = s.substring(0, s.indexOf('^'));
+				String s2 = s.substring(s.lastIndexOf('^')+1);
+				return isConst(s1) && isConst(s2);
+			}
+	 }
 	 static boolean isSolo(String s) {
 		int count_open = 0;
 		int count_close = 0;
