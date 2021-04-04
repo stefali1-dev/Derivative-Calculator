@@ -12,7 +12,6 @@ import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 public class Latex_main extends JFrame{
 	
-	static derivate d = new derivate();
 	static expressions e = new expressions();
 	
 	public Latex_main() throws HeadlessException {
@@ -23,7 +22,6 @@ public class Latex_main extends JFrame{
 		
 	}
 
-	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		Latex_main app = new Latex_main();
 		
@@ -33,12 +31,11 @@ public class Latex_main extends JFrame{
 		Scanner myObj = new Scanner(System.in);
 		String math = myObj.nextLine();
 		
-		
 		math = math.replaceAll("\\s+", "");
-		math = d.derivate(math);
+		math = e.derivate(math);
 		math = e.finalStringFormat(math);
 		
-		// --------------- DE LUCRAT LA POWER FORMAT ---------------------
+		
 		
 		System.out.println(math);
 		//return;

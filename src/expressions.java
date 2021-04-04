@@ -1,14 +1,69 @@
 
- public class expressions {
-	 static derivate d = new derivate();
-	 static boolean isConst(String s) {
-		 if(isConstPowConst(s))
+public class expressions {
+	 
+	 
+	 public static String derivate(String s) {
+			// Scot parantezele
+			while(!s.equals(elimBrackets(s)))
+				s = elimBrackets(s);
+			
+			// Suma
+			if(isSum(s))
+				return addition(s);
+			
+			// Diferenta
+			if(isDif(s))
+				return substraction(s);
+			
+			// Produs
+			if(isMultiplication(s))
+				return multiplyRule(s);
+			
+			// Impartire
+			if(isDivision(s))
+				return divideRule(s);
+			
+			// --------------------------- //
+			
+			if(isConst(s))
+				return "0";
+			
+			if(isX(s))
+				return "1";
+			
+			if(isPower(s))
+				return powerRule(s);
+			
+			if(isSqrt(s))
+				return sqrtRule(s);
+			
+			if(isLog(s))
+				return logRule(s);
+			
+			if(isConstPowX(s))
+				return constPowXRule(s);
+			
+			// -- functii grigonometrice -- //
+			if(isTrigon(s))
+				return trigonDerivate(s);
+			
+			return "Eroare";
+		}
+
+
+	static boolean isConst(String s) {
+		if(s.indexOf('x') != -1)
+			return false;
+		if(isSingleExpression(s)) {
 				return true;
+		}
+		if(isConstPowConst(s))
+			return true;
 		if(s.equals("e"))
 			return true;
 		boolean ok = true;
 		for(int i=0; i<s.length(); i++) {
-			if(!Character.isDigit(s.charAt(i))) {
+			if(!Character.isDigit(s.charAt(i)) && !isOperationSign(s.charAt(i)) && s.charAt(i) != 'e') {
 				ok = false;
 				break;
 			}
@@ -73,9 +128,9 @@
 		if(s.indexOf('^') == -1)
 			return false;
 		else {
-			String s1 = s.substring(0, s.indexOf('^'));
+			String s1 = s.substring(0, s.lastIndexOf('^'));
 			String s2 = s.substring(s.lastIndexOf('^')+1);
-			return isConst(s2) && !isConst(s1);
+			return !isConst(s1) && isConst(s2);
 		}
 	}
 	 static boolean isConstPowX(String s) {
@@ -83,7 +138,7 @@
 			return false;
 		else {
 			String s1 = s.substring(0, s.indexOf('^'));
-			String s2 = s.substring(s.lastIndexOf('^')+1);
+			String s2 = s.substring(s.indexOf('^')+1);
 			return isConst(s1) && !isConst(s2);
 		}
 	}
@@ -92,7 +147,11 @@
 				return false;
 			else {
 				String s1 = s.substring(0, s.indexOf('^'));
-				String s2 = s.substring(s.lastIndexOf('^')+1);
+				String s2 = s.substring(s.indexOf('^')+1);
+				while(!s1.equals(elimBrackets(s1)))
+					s1 = elimBrackets(s1);
+				while(!s2.equals(elimBrackets(s2)))
+					s2 = elimBrackets(s2);
 				return isConst(s1) && isConst(s2);
 			}
 	 }
@@ -111,12 +170,10 @@
 		return true;
 	}
 	 static boolean isSingleExpression(String s) {
-		return isX(s) || isSqrt(s) || isLog(s) || isTrigon(s) || isPower(s) || isConstPowX(s);
+		return isX(s) || isSqrt(s) || isLog(s) || isTrigon(s) || isPower(s);
 	}
-	 static boolean isInParan(String s) {
-		return s.indexOf('(') == 0 && s.indexOf(')') == s.length() - 1;
-	}
-	 static int isOutOfParan(String s, char c) {
+
+	static int isOutOfParan(String s, char c) {
 		int count = 0;
 		for(int i=0; i<s.length(); i++) {
 			if(s.charAt(i) == '(') 
@@ -194,7 +251,7 @@
 	 public static int index_st, index_dr;
 	 static String parteaStanga(String s, int index) {
 		 index_st = index - 1;
-		 int i = index_st, count_open = 0, count_close = 0;
+		 int i, count_open = 0, count_close = 0;
 		 
 		 for(i = index_st; i>=0; i--) {
 			 if(s.charAt(i) == ')')
@@ -264,6 +321,7 @@
 		 }
 		 
 		 // power format ------ TRE SA LUCREZ AICI --------------------------
+		 
 		 c = "^";
 		 for (int index = s.indexOf(c);index >= 0; index = s.indexOf(c, index + 1)) {
 			 
@@ -272,15 +330,14 @@
 			 }
 			 
 			 else if(s.charAt(index + 1) == '(') {
-				 s = addChar(s, '{', index+1);
-				 index += 2;
-			     if(s.charAt(index) == '(') {
-			    	  s = s.substring(0, index) + s.substring(index+1);
-			    	  while(s.charAt(index) != ')')
-			    		  index++;
-			    	  s = addChar(s, '}', index+1);
-			    	  s = s.substring(0, index) + s.substring(index+1);
-			     }
+				 int start_poz = index+1;
+		    	 int end_poz = getParanEndPos(s, start_poz);
+		    	 
+		    	 s = s.substring(0, start_poz) + s.substring(start_poz+1);
+				 s = addChar(s, '{', start_poz);
+				 
+				 s = s.substring(0, end_poz) + s.substring(end_poz+1);
+				 s = addChar(s, '}', end_poz);
 			 }
 			 else {
 				 s = addChar(s, '{', index+1);
@@ -323,13 +380,47 @@
 		 return s;
 	 }
 	 static String finalStringFormat(String s) {
-		 String elem[] = {"\\cdot 1", "\\cdot (1)", "1\\cdot ", "(1)\\cdot ", "\\cdot ((1)), ", "((1))\\cdot "};
+		 // remove useless
+		 String[] elem = {"\\cdot 1", "\\cdot (1)", "1\\cdot ", "(1)\\cdot ", "\\cdot ((1)), ", "((1))\\cdot ", "^{1}"};
 		 for(String c: elem) {
 			 for (int index = s.indexOf(c);index >= 0; index = s.indexOf(c, index + 1)) {
 				 s = s.substring(0, index) + s.substring(index+c.length());
 			 }
 		 }
+		 // replace --
+		 String[] elem2 = {"--", "++"};
+		 for(String c: elem2) {
+			 for (int index = s.indexOf(c);index >= 0; index = s.indexOf(c, index + 1)) {
+				 s = s.substring(0, index) + s.substring(index+c.length());
+				 s = addChar(s, '+', index);
+				 
+			 }
+		 }
+		 String[] elem3 = {"-+", "+-"};
+		 for(String c: elem3) {
+			 for (int index = s.indexOf(c);index >= 0; index = s.indexOf(c, index + 1)) {
+				 s = s.substring(0, index) + s.substring(index+c.length());
+				 s = addChar(s, '-', index);
+				 
+			 }
+		 }
+		 if(s.charAt(0) == '+')
+			 s = s.substring(1);
 		 return s;
+	 }
+	 
+	 static int getParanEndPos(String s, int start_pos) {
+		 int count = 0;
+			for(int i=start_pos; i<s.length(); i++) {
+				if(s.charAt(i) == '(') 
+					count++;
+				if(s.charAt(i) == ')')
+					count--;
+				if(count == 0)
+					return i;
+			}
+			System.out.println("Ai scris gresit");
+			return -1;
 	 }
 	
 	//  --------- Rules ----------//
@@ -347,28 +438,16 @@
 		return isOutOfParan(s, '/');
 	}
 	 static boolean isSum(String s) {
-		if(plusPosition(s) != -1)
-			return true;
-		else
-			return false;
+		 return plusPosition(s) != -1;
 	}
 	 static boolean isDif(String s) {
-		if(minusPosition(s) != -1)
-			return true;
-		else
-			return false;
+		 return minusPosition(s) != -1;
 	}
 	 static boolean isMultiplication(String s) {
-		if(multiplicPosition(s) != -1)
-			return true;
-		else
-			return false;
+		 return multiplicPosition(s) != -1;
 	}
 	 static boolean isDivision(String s) {
-		if(divisionPosition(s) != -1)
-			return true;
-		else
-			return false;
+		 return divisionPosition(s) != -1;
 	}
 	 
 	static String addition(String s) {
@@ -376,8 +455,8 @@
 		 String s1 = s.substring(0, poz);
 		 String s2 = s.substring(poz + 1);
 		 
-		 String s1_derivate = d.derivate(s1);
-		 String s2_derivate = d.derivate(s2);
+		 String s1_derivate = derivate(s1);
+		 String s2_derivate = derivate(s2);
 		 
 		 if(hasBrackets(s1))
 			 s1_derivate = "(" + s1_derivate + ")";
@@ -401,8 +480,8 @@
 		 String s1 = s.substring(0, poz);
 		 String s2 = s.substring(poz + 1);
 		 
-		 String s1_derivate = d.derivate(s1);
-		 String s2_derivate = d.derivate(s2);
+		 String s1_derivate = derivate(s1);
+		 String s2_derivate = derivate(s2);
 		 
 		 if(hasBrackets(s1))
 			 s1_derivate = "(" + s1_derivate + ")";
@@ -431,8 +510,8 @@
 		 if(isMultiplication(s2) || isDivision(s2))
 			 s2 = "(" + s2 + ")";
 		 
-		 String s1_derivate = d.derivate(s1);
-		 String s2_derivate = d.derivate(s2);
+		 String s1_derivate = derivate(s1);
+		 String s2_derivate = derivate(s2);
 		 
 		 s1 = formatLatexStyle(s1);
 		 s2 = formatLatexStyle(s2);
@@ -469,8 +548,8 @@
 		 if(isMultiplication(s2) || isDivision(s2))
 			 s2 = "(" + s2 + ")";
 		 
-		 String s1_derivate = d.derivate(s1);
-		 String s2_derivate = d.derivate(s2);
+		 String s1_derivate = derivate(s1);
+		 String s2_derivate = derivate(s2);
 		 
 		 s1 = formatLatexStyle(s1);
 		 s2 = formatLatexStyle(s2);
@@ -497,7 +576,7 @@
 	 }
 	 static String powerRule(String s) {
 		 String s1 = s.substring(0, s.lastIndexOf('^'));
-		 String s1_derivate = d.derivate(s1);
+		 String s1_derivate = derivate(s1);
 		 if(hasBrackets(s1))
 			 s1_derivate = "(" + s1_derivate + ")";
 		 
@@ -511,7 +590,8 @@
 		 Const_2 = Const_2.concat(st);
 		 // -------
 		 
-		 
+		 if(Const_1.equals("e"))
+			 Const_2 = "e-1";
 		 s = Const_1 + "\\cdot " + formatLatexStyle(s1) + "^{" + Const_2 + "}";
 		 if(s1.equals("x"))
 			 return s;
@@ -521,7 +601,7 @@
 	 static String sqrtRule(String s) {
 		 String s1 = Chain(s);
 		 
-		 String s1_derivate = d.derivate(s1);
+		 String s1_derivate = derivate(s1);
 		 
 		 s1_derivate = "(" + s1_derivate + ")";
 		 
@@ -535,7 +615,7 @@
 	 static String logRule(String s) {
 		 String s1 = Chain(s);
 		 
-		 String s1_derivate = d.derivate(s1);
+		 String s1_derivate = derivate(s1);
 		 
 		 s1_derivate = "(" + s1_derivate + ")";
 		 if(s1.equals("x"))
@@ -550,7 +630,7 @@
 		 if(!isSum(s2) && !isDif(s2))
 			 s2 = elimBrackets(s2);
 		 
-		 String s2_derivate = "(" + d.derivate(s2) + ")";
+		 String s2_derivate = "(" + derivate(s2) + ")";
 		 
 		 if(s.equals("e^x"))
 			 return s;
@@ -562,7 +642,7 @@
 	 }
 	 static String trigonDerivate(String s) {
 		 String s1 = Chain(s);
-		 String s1_derivate = "(" + d.derivate(s1) + ")";
+		 String s1_derivate = "(" + derivate(s1) + ")";
 		 s1 = formatLatexStyle(s1);
 		 
 		 if(isSin(s)) {
