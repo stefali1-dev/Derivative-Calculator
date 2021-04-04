@@ -130,6 +130,8 @@ public class expressions {
 		else {
 			String s1 = s.substring(0, s.lastIndexOf('^'));
 			String s2 = s.substring(s.lastIndexOf('^')+1);
+			s1 = elimBrackets(s1);
+			s2 = elimBrackets(s2);
 			return !isConst(s1) && isConst(s2);
 		}
 	}
@@ -139,6 +141,8 @@ public class expressions {
 		else {
 			String s1 = s.substring(0, s.indexOf('^'));
 			String s2 = s.substring(s.indexOf('^')+1);
+			s1 = elimBrackets(s1);
+			s2 = elimBrackets(s2);
 			return isConst(s1) && !isConst(s2);
 		}
 	}
@@ -581,6 +585,7 @@ public class expressions {
 			 s1_derivate = "(" + s1_derivate + ")";
 		 
 		 String Const_1 = s.substring(s.lastIndexOf('^') + 1, s.length());
+		 Const_1 = elimBrackets(Const_1);
 		 
 		 // -------
 		 String Const_2 = Const_1;
@@ -592,6 +597,8 @@ public class expressions {
 		 
 		 if(Const_1.equals("e"))
 			 Const_2 = "e-1";
+		 
+		 
 		 s = Const_1 + "\\cdot " + formatLatexStyle(s1) + "^{" + Const_2 + "}";
 		 if(s1.equals("x"))
 			 return s;
@@ -626,6 +633,8 @@ public class expressions {
 	 static String constPowXRule(String s) {
 		 String s1 = s.substring(0, s.indexOf('^'));
 		 String s2 = s.substring(s.indexOf('^') + 1);
+		 s1 = elimBrackets(s1);
+		 s2 = elimBrackets(s2);
 		 
 		 if(!isSum(s2) && !isDif(s2))
 			 s2 = elimBrackets(s2);
