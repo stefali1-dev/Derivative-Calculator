@@ -27,7 +27,7 @@ public class AppLayout extends JFrame implements ActionListener{
 	static JLabel Formula;
 	static JTextField Input;
 	static AppLayout app;
-	static String math;
+	static String math = "";
 	
 	public AppLayout() throws HeadlessException {
 		super();
@@ -45,16 +45,12 @@ public class AppLayout extends JFrame implements ActionListener{
         //Set up the content pane.
         pane = (JPanel) frame.getContentPane();
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-        //
-        math = "\\cdot";
-		TeXFormula formula = new TeXFormula(math);
-		TeXIcon ti = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 40);
-		BufferedImage b = new BufferedImage(ti.getIconWidth(), ti.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		ti.paintIcon(new JLabel(), b.getGraphics(), 0, 0);
-		//
+        
+        
 		Formula = new JLabel();
-		Formula.setIcon(ti);
 		Formula.setAlignmentX(Component.CENTER_ALIGNMENT);
+		paintIcon();
+		
         pane.add(Formula);
 		
         pane.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -91,12 +87,16 @@ public class AppLayout extends JFrame implements ActionListener{
 		
 		System.out.println(math);
 		
+		paintIcon();
+		
+		app.pack();
+		
+	}
+	public static void paintIcon() {
 		TeXFormula formula = new TeXFormula(math);
 		TeXIcon ti = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 40);
 		BufferedImage b = new BufferedImage(ti.getIconWidth(), ti.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		ti.paintIcon(new JLabel(), b.getGraphics(), 0, 0);
 		Formula.setIcon(ti);
-		app.pack();
-		
 	}
 }
