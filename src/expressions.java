@@ -680,13 +680,13 @@ public class expressions {
 		 }
 		 if(isArcSin(s)) {
 			 if(s1.equals("x"))
-				 return "\\frac {1}{\\sqrt{1-x^{2}}";
+				 return "\\frac {1}{\\sqrt{1-x^{2}}}";
 			 else
 				 return "\\frac {1}{\\sqrt{1-(" + s1 + ")^{2}}}\\cdot " + s1_derivate;
 		 }
 		 if(isArcCos(s)) {
 			 if(s1.equals("x"))
-				 return "-\\frac {1}{\\sqrt{1-x^{2}}";
+				 return "-\\frac {1}{\\sqrt{1-x^{2}}}";
 			 else
 				 return "-\\frac {1}{\\sqrt{1-(" + s1 + ")^{2}}}\\cdot " + s1_derivate;
 		 }
