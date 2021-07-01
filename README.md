@@ -1,3 +1,3 @@
 # Derivative-Calculator
 
-Run using the **Calc-Derivate.jar**
+Run using the **Calculate.jar**
