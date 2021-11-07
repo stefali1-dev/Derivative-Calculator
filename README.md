@@ -1,8 +1,9 @@
 # Derivative-Calculator
 
-An app that can derivate **any** derivable function
+An app that can differentiate **any** differentiable function
 
-Run using the **Calculate.jar**
+
+Run using the **Calculate.jar**	*(you must have the JDK installed)*
 
 Enter the function in the text box and hit **Calculate**
 
