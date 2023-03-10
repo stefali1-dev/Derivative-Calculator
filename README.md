@@ -9,8 +9,8 @@ Enter the function in the text box and hit **Calculate**
 
 Several examples:
 
-![Example 1](https://raw.githubusercontent.com/stefali1-dev/Derivative-Calculator/master/examples/example1.png)
+![Example 1](https://raw.githubusercontent.com/stefali1-dev/Derivative-Calculator/master/Examples/example1.png)
 
-![Example 2](https://github.com/stefali1-dev/Derivative-Calculator/blob/master/examples/example2.png?raw=true)
+![Example 2](https://github.com/stefali1-dev/Derivative-Calculator/blob/master/Examples/example2.png?raw=true)
 
-![Example 3](https://github.com/stefali1-dev/Derivative-Calculator/blob/master/examples/example3.png?raw=true)
+![Example 3](https://github.com/stefali1-dev/Derivative-Calculator/blob/master/Examples/example3.png?raw=true)
